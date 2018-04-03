@@ -1,0 +1,444 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>CSS 压缩/解压工具 | 菜鸟工具</title>
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="canonical" href="https://c.runoob.com/front-end/52" />
+    <meta name="keywords" content="CSS 压缩/解压工具">
+    <meta name="description" content="CSS 压缩/解压工具可以实现 CSS 代码在线压缩、解压，也可以格式化 CSS 代码..">
+
+    <script src="//cdn.bootcss.com/codemirror/5.25.0/codemirror.min.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.25.0/codemirror.min.css">
+    <script src="//cdn.bootcss.com/codemirror/5.25.0/mode/css/css.js"></script>
+
+    <script src="https://c.runoob.com/wp-content/themes/toolrunoob/assets/js/format.js"></script>
+    <link href="https://cdn.bootcss.com/normalize/7.0.0/normalize.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="https://c.runoob.com/wp-content/themes/toolrunoob/startbootstrap/css/modern-business.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../Content/TextEditor/font-awesome.4.6.0.css" rel="stylesheet" />
+
+    <!--[if lt IE 9]>
+        <script src="//apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+        <script src="//apps.bdimg.com/libs/respond.js/1.4.2/respond.js"></script>
+    <![endif]-->
+    <!-- PHP 代码 -->
+    <link rel="stylesheet" href="https://c.runoob.com/wp-content/themes/toolrunoob/style.css?version=1.02">
+
+
+
+    <!-- jQuery -->
+    <script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+    <!--
+        generated 1754 seconds ago
+        generated in 0.133 seconds
+        served from batcache in 0.011 seconds
+        expires in 1846 seconds
+    -->
+    <style>
+        body {
+            padding-top: 0px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" style="width:100%">
+
+
+
+        <br>
+
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div id="compiler" class="panel-heading">
+                        <form class="form-inline" role="form">
+                            <button type="button" class="btn btn-success" id="submitBTN"><i class="fa fa-compress"></i> 压缩</button>
+                            <button type="button" class="btn btn-default" id="submitBTN2"><i class="fa fa-expand"></i> 解压/格式化</button>
+                            <label class="pull-right"><strong style="font-size: 16px"><i class="fa fa-cogs"></i> CSS 压缩/解压工具</strong></label>
+                        </form>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-12" id="warning" style="display: none;">
+                            <div class="alert alert-warning">
+                                <a href="#" class="close" data-dismiss="alert">
+                                    &times;
+                                </a>
+                                <p><strong>警告！</strong>JSON 格式错误。</p>
+                                <p id="warning-info"></p>
+                            </div>
+                        </div>
+                        <form role="form" id="compiler-form">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <textarea class="form-control" id="code" name="code" rows="10">a {
+    color:red;
+}</textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <textarea placeholder="运行结果……" class="form-control" id="compiler-textarea-result" rows="10"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <style type="text/css">
+            .CodeMirror {
+                height: 500px;
+            }
+        </style>
+        <script type="text/javascript" src="//static.runoob.com/assets/js/jquery.format.js"></script>
+        <script type="text/javascript" src="//static.runoob.com/assets/js/ObjTree.min.js"></script>
+        <script>
+            var editor1 = CodeMirror.fromTextArea(document.getElementById("code"), {
+                lineNumbers: true,
+                matchBrackets: true,
+                mode: "text/css",
+                indentUnit: 4,
+                indentWithTabs: true,
+            });
+            var editor2 = CodeMirror.fromTextArea(document.getElementById("compiler-textarea-result"), {
+                lineNumbers: true,
+                lineWrapping: true,
+                matchBrackets: true,
+                mode: "text/css",
+                indentUnit: 4,
+                indentWithTabs: true,
+            });
+
+            $("#submitBTN").click(function () {
+
+
+                loadingdata = '程序正在运行中……';
+                $("#compiler-textarea-result").val(loadingdata);
+
+                code = editor1.getValue();
+                s = 'pack';
+                output = CSSPacker[s](code);
+                CSSPacker[s](document.getElementById('code').value)
+                editor2.getDoc().setValue(output);
+            });
+
+            $("#submitBTN2").click(function () {
+                loadingdata = '程序正在运行中……';
+                $("#compiler-textarea-result").val(loadingdata);
+
+                code = editor1.getValue();
+                if (code) {
+                    s = 'format';
+                    result = CSSPacker[s](code);
+                    editor2.getDoc().setValue(result);
+                }
+            });
+            $("#submitBTN3").click(function () {
+                var content = editor1.getValue();
+
+                if (content.trim().length == 0) {
+                    return false;
+                }
+
+                try {
+                    var jsonStr = editor1.getValue();
+                    var json = JSON.parse(jsonStr);
+                    $("#warning").html("<div class=\"alert alert-success\">JSON 数据合法</div>").show().delay(5000).fadeOut();
+                } catch (e) {
+                    $("#warning").html("<div class=\"alert alert-danger\">JSON 数据错误：" + e + "</div>").show().delay(5000).fadeOut();
+                }
+
+            });
+
+
+            function jsonToxml() {
+
+                var content = editor1.getValue();
+
+                if (content.trim().length == 0) {
+                    return false;
+                }
+
+
+                try {
+                    var jsonStr = editor1.getValue();
+                    var json = JSON.parse(jsonStr);
+                    var xotree = new XML.ObjTree();
+                    var xml = xotree.writeXML(json);
+                    xml = decodeSpecialCharacter(xml);
+
+                    editor2.setOption("mode", 'application/xml');
+                    formatXML = $.format(xml, { method: 'xml' });
+                    editor2.getDoc().setValue(formatXML);
+                } catch (e) {
+                    $("#warning").html("<div class=\"alert alert-danger\">JSON 数据错误：" + e + "</div>").show().delay(5000).fadeOut();
+                }
+            }
+            function decodeSpecialCharacter(str) {
+                return str.replace(/\&amp;/g, '&').replace(/\&gt;/g, '>').replace(/\&lt;/g,
+                    '<').replace(/\&quot;/g, '"');
+            }
+
+            function jsonTocsv() {
+
+                var content = editor1.getValue();
+
+                if (content.trim().length == 0) {
+                    return false;
+                }
+
+                try {
+                    var jsonStr = editor1.getValue();
+                    var json = JSON.parse(jsonStr);
+                    var csv = jsonTocsvbyjson(json);
+
+                    editor2.setOption("mode", 'text/x-q');
+                    editor2.getDoc().setValue(csv);
+
+
+                } catch (e) {
+                    $("#warning").html("<div class=\"alert alert-danger\">JSON 数据错误：" + e + "</div>").show().delay(5000).fadeOut();
+                }
+            }
+            function jsonTocsvbyjson(data) {
+
+                arr = [];
+                flag = true;
+
+                var header = "";
+                var content = "";
+                var headFlag = true;
+
+                try {
+
+                    var type1 = typeof data;
+
+                    if (type1 != "object") {
+                        data = processJSON($.parseJSON(data));
+                    } else {
+                        data = processJSON(data);
+                    }
+
+                } catch (e) {
+                    setMessage("error", "Error in Convert : add proper input format");
+                    return false;
+                }
+
+                $.each(data, function (k, value) {
+                    if (k % 2 == 0) {
+                        if (headFlag) {
+                            if (value != "end") {
+                                header += value + ",";
+                            } else {
+                                // remove last colon from string
+                                header = header.substring(0, header.length - 1);
+                                headFlag = false;
+                            }
+                        }
+                    } else {
+                        if (value != "end") {
+                            var temp = data[k - 1];
+                            if (header.search(temp) != -1) {
+                                content += value + ",";
+                            }
+                        } else {
+                            // remove last colon from string
+                            content = content.substring(0, content.length - 1);
+                            content += "\n";
+                        }
+                    }
+
+                });
+
+                return (header + "\n" + content);
+            }
+            function processJSON(data) {
+
+                $.each(data, function (k, data1) {
+
+                    var type1 = typeof data1;
+
+                    if (type1 == "object") {
+
+                        flag = false;
+                        processJSON(data1);
+                        arr.push("end");
+                        arr.push("end");
+
+                    } else {
+                        arr.push(k, data1);
+                    }
+
+                });
+
+                return arr;
+            }
+
+            function jsonToyaml() {
+
+                var content = editor1.getValue();
+
+                if (content.trim().length == 0) {
+                    return false;
+                }
+
+                try {
+                    var jsonStr = editor1.getValue();
+                    var yaml = json2yaml(jsonStr);
+                    editor2.setOption("mode", 'text/x-q');
+                    editor2.getDoc().setValue(yaml);
+                } catch (e) {
+                    $("#warning").html("<div class=\"alert alert-danger\">JSON 数据错误：" + e + "</div>").show().delay(5000).fadeOut();
+                }
+                last_action = "jsonToyaml";
+            }
+
+            var spacing = " ";
+            function json2yaml(obj) {
+
+                if (typeof obj == 'string') {
+                    obj = JSON.parse(obj);
+                }
+
+
+                var ret = [];
+                console.log(typeof obj);
+                convert(obj, ret);
+                return ret.join("\n");
+            };
+
+
+            function getType(obj) {
+                var type = typeof obj;
+
+                if (obj instanceof Array) {
+                    return 'array';
+                } else if (type == 'string') {
+                    return 'string';
+                } else if (type == 'boolean') {
+                    return 'boolean';
+                } else if (type == 'number') {
+                    return 'number';
+                } else if (type == 'undefined' || obj === null) {
+                    return 'null';
+                } else {
+                    return 'hash';
+                }
+            }
+
+            function convert(obj, ret) {
+                var type = getType(obj);
+
+                switch (type) {
+                    case 'array':
+                        convertArray(obj, ret);
+                        break;
+                    case 'hash':
+                        convertHash(obj, ret);
+                        break;
+                    case 'string':
+                        convertString(obj, ret);
+                        break;
+                    case 'null':
+                        ret.push('null');
+                        break;
+                    case 'number':
+                        ret.push(obj.toString());
+                        break;
+                    case 'boolean':
+                        ret.push(obj ? 'true' : 'false');
+                        break;
+                }
+            }
+            function convertArray(obj, ret) {
+                for (var i = 0; i < obj.length; i++) {
+                    var ele = obj[i];
+                    var recurse = [];
+                    convert(ele, recurse);
+
+                    for (var j = 0; j < recurse.length; j++) {
+                        ret.push((j == 0 ? "- \n   " : spacing) + recurse[j]);
+                    }
+                }
+            }
+
+            function convertHash(obj, ret) {
+                for (var k in obj) {
+                    var recurse = [];
+                    if (obj.hasOwnProperty(k)) {
+                        var ele = obj[k];
+                        convert(ele, recurse);
+                        var type = getType(ele);
+                        if (type == 'string' || type == 'null' || type == 'number' || type == 'boolean') {
+                            ret.push(normalizeString(k) + ': ' + recurse[0]);
+                        } else {
+                            ret.push(normalizeString(k) + ': ');
+                            for (var i = 0; i < recurse.length; i++) {
+                                ret.push(spacing + recurse[i]);
+                            }
+                        }
+                    }
+                }
+            }
+
+            function normalizeString(str) {
+                if (str.match(/^[\w]+$/)) {
+                    return str;
+                } else {
+                    return JSON.stringify(str);
+                }
+            }
+
+            function convertString(obj, ret) {
+                ret.push(normalizeString(obj));
+            }
+        </script>
+
+    </div>
+    <div style="display:none;">
+        <script>
+            var _hmt = _hmt || [];
+            (function () {
+                // 统计
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?68c6d4f0f6c20c5974b17198fa6fd40a";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+            (function () {
+                var bp = document.createElement('script');
+                var curProtocol = window.location.protocol.split(':')[0];
+                if (curProtocol === 'https') {
+                    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+                }
+                else {
+                    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+                }
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(bp, s);
+            })();
+        </script>
+
+    </div>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
