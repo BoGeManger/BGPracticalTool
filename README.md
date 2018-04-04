@@ -1,4 +1,4 @@
-# BGPracticalTool
+# BGPracticalTool by Nyberg
  This is a simple Web utility, including：
   * text comparison
   * HTML formatting
