@@ -330,7 +330,12 @@
         newheader+=" \n BEGIN \n CREATE TABLE ["+tbname+"]( \n";
         $.each(headerlist,function(index,value){
           if(index!=0){
-            newheader+=" ["+value+"] [NVARCHAR](200) NOT NULL, \n";
+            if(index==headerlist.length-1){
+              newheader+=" ["+value+"] [NVARCHAR](200) NOT NULL\n";
+            }
+            else{
+              newheader+=" ["+value+"] [NVARCHAR](200) NOT NULL, \n";
+            }
             feildlist.push(value);
           }
         })
