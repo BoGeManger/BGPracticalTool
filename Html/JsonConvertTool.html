@@ -76,6 +76,7 @@
               <button type="button" class="btn btn-warning" onclick="jsonTocsv();">JSON 转 CSV</button>
               <button type="button" class="btn btn-warning" onclick="jsonToyaml();">JSON 转 YAML</button>
               <button type="button" class="btn btn-warning" onclick="jsonTosql();">JSON 转 SQL</button>
+              <button type="button" class="btn btn-warning" onclick="jsonTocsharp();">JSON 转 C#</button>
               <label class="pull-right">
                 <strong style="font-size: 16px">
                   <i class="fa fa-cogs"></i> JSON 在线解析</strong>
@@ -252,6 +253,110 @@
           '<').replace(/\&quot;/g, '"');
       }
 
+      function jsonTocsharp() {
+
+        var content = editor1.getText();
+
+        if (content.trim().length == 0) {
+          return false;
+        }
+
+        try {
+          var jsonStr = editor1.getText();
+          var json = JSON.parse(jsonStr);
+          var csv = jsonTocsharpbyjson(json);
+          editor2.setMode("text");
+          editor2.setText(csv);
+
+
+        } catch (e) {
+          $("#warning").html("<div class=\"alert alert-danger\">JSON 数据错误：" + e + "</div>").show().delay(5000).fadeOut();
+        }
+      }
+
+      function jsonTocsharpbyjson(data){
+        kvalue = true;
+        arr = [];
+        flag = true;
+
+        var header = "";
+        var content = "";
+        var headFlag = true;
+
+        try {
+
+          var type1 = typeof data;
+
+          if (type1 != "object") {
+            data = sqlprocessJSON($.parseJSON(data));
+          } else {
+            data = sqlprocessJSON(data);
+          }
+
+        } catch (e) {
+          setMessage("error", "Error in Convert : add proper input format");
+          return false;
+        }
+
+        $.each(data, function (k, value) {
+          if (k % 2 == 0) {
+            if (headFlag) {
+              if (value != "end") {
+                header += value + ",";
+              } else {
+                // remove last colon from string
+                header = header.substring(0, header.length - 1);
+                headFlag = false;
+              }
+            }
+          } else {
+            if (value != "end") {
+              var temp = data[k - 1];
+              if (header.search(temp) != -1) {
+                content += value + ",";
+              }
+            } else {
+              // remove last colon from string
+              content = content.substring(0, content.length - 1);
+              content += "\n";
+            }
+          }
+
+        });
+
+        var feildlist = new Array();
+        var headerlist = header.split(',');
+        var tbname = headerlist[0];
+        var newheader = "public class " + tbname + " \n{\n"
+        $.each(headerlist, function (index, value) {
+          if (index != 0) {
+              newheader += " public string " + value + " {get;set;}\n";
+              feildlist.push(value);
+          }
+        })
+        newheader += "}\n";
+        newheader +="\n//using Newtonsoft.Json;"
+        newheader += "\nvar "+tbname+"Entity = JsonConvert.DeserializeObject<List<"+tbname+">>(data);\n";
+
+        var newinsertlist = new Array();
+        var newupdatelist = new Array();
+        var entityfeilds = new Array();
+        var newentityfeilds = new Array();
+        $.each(feildlist, function (index, value) {
+          newupdatelist.push(value + "='{"+index+"}'");
+          newinsertlist.push("'{" + index + "}'");
+          entityfeilds.push(tbname+"Entity."+value);
+          newentityfeilds.push("new"+tbname+"."+value+"="+tbname+"Entity."+value+";")
+        })
+
+        var updatecontent = "var sql=string.Format(@\"UPDATE " + tbname + " SET " + newupdatelist.join(',') + "\","+entityfeilds.join(',')+");\n";
+        var insertcontent = "var sql=string.Format(@\"INSERT INTO " + tbname + "(" + feildlist.join(',') + ") VALUES (" + newinsertlist.join(',') + ")" + "\","+entityfeilds.join(',')+");\n";
+
+        var entitycontent = "var new"+tbname+"=new "+tbname+"();\n";
+        entitycontent+=newentityfeilds.join('\n');
+        return (newheader + "\n" + insertcontent + "\n" + updatecontent+"\n"+entitycontent);
+      }
+
       function jsonTosql() {
 
         var content = editor1.getText();
@@ -326,60 +431,60 @@
         var feildlist = new Array();
         var headerlist = header.split(',');
         var tbname = headerlist[0];
-        var newheader = "IF NOT EXISTS(SELECT * FROM sysobjects WHERE name = '"+tbname+"' and xtype='u')"
-        newheader+=" \n BEGIN \n CREATE TABLE ["+tbname+"]( \n";
-        $.each(headerlist,function(index,value){
-          if(index!=0){
-            if(index==headerlist.length-1){
-              newheader+=" ["+value+"] [NVARCHAR](200) NOT NULL\n";
+        var newheader = "IF NOT EXISTS(SELECT * FROM sysobjects WHERE name = '" + tbname + "' and xtype='u')"
+        newheader += " \n BEGIN \n CREATE TABLE [" + tbname + "]( \n";
+        $.each(headerlist, function (index, value) {
+          if (index != 0) {
+            if (index == headerlist.length - 1) {
+              newheader += " [" + value + "] [NVARCHAR](200) NOT NULL\n";
             }
-            else{
-              newheader+=" ["+value+"] [NVARCHAR](200) NOT NULL, \n";
+            else {
+              newheader += " [" + value + "] [NVARCHAR](200) NOT NULL, \n";
             }
             feildlist.push(value);
           }
         })
-        newheader+=" END \nGO \n";
+        newheader += " END \nGO \n";
 
         var newinsertlist = new Array();
         var newupdatelist = new Array();
         var contentlist = content.split('\n');
-        $.each(contentlist,function(index,value){
-          if(index!=contentlist.length-1 && index!=0){
-           var valuelst  = value.split(',');
-           var updatelist = new Array();
-           var insertlist = new Array();
-           $.each(valuelst,function(nindex,nvalue){
-            updatelist.push(feildlist[nindex]+"='"+nvalue+"'");
-            insertlist.push("'"+nvalue+"'");
-           })
-           newupdatelist.push(updatelist.join(','));
-           newinsertlist.push(insertlist.join(','));
+        $.each(contentlist, function (index, value) {
+          if (index != contentlist.length - 1 && index != 0) {
+            var valuelst = value.split(',');
+            var updatelist = new Array();
+            var insertlist = new Array();
+            $.each(valuelst, function (nindex, nvalue) {
+              updatelist.push(feildlist[nindex] + "='" + nvalue + "'");
+              insertlist.push("'" + nvalue + "'");
+            })
+            newupdatelist.push(updatelist.join(','));
+            newinsertlist.push(insertlist.join(','));
           }
         })
 
         var updatecontent = "";
-        $.each(newupdatelist,function(index,value){
-          updatecontent+="UPDATE "+tbname+" SET "+value+"\n";
+        $.each(newupdatelist, function (index, value) {
+          updatecontent += "UPDATE " + tbname + " SET " + value + "\n";
         })
 
         var insertcontent = "";
-        $.each(newinsertlist,function(index,value){
-          insertcontent+="INSERT INTO "+tbname+"("+feildlist.join(',')+") VALUES ("+value+")"+"\n";
+        $.each(newinsertlist, function (index, value) {
+          insertcontent += "INSERT INTO " + tbname + "(" + feildlist.join(',') + ") VALUES (" + value + ")" + "\n";
         })
 
-        return (newheader + "\n" + insertcontent+"\n"+updatecontent);
+        return (newheader + "\n" + insertcontent + "\n" + updatecontent);
       }
 
-      var kvalue=true;
+      var kvalue = true;
       function sqlprocessJSON(data) {
         $.each(data, function (k, data1) {
           var type1 = typeof data1;
           if (type1 == "object") {
-            if(kvalue){
-            arr.push(k);
-            arr.push("end");
-            kvalue = false;
+            if (kvalue) {
+              arr.push(k);
+              arr.push("end");
+              kvalue = false;
             }
             flag = false;
             sqlprocessJSON(data1);
