@@ -46,20 +46,19 @@
 
             $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(0).attr('title', '文本工具');
             $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(0).attr('class', 'tooltipmain active');
-            $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(1).attr('title', 'HTML格式工具');
+            $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(1).attr('title', 'JSON格式工具');
             $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(1).attr('class', 'tooltipmain');
-            $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(2).attr('title', 'JS格式工具');
+            $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(2).attr('title', '文本比较工具');
             $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(2).attr('class', 'tooltipmain');
-            $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(3).attr('title', 'CSS格式工具');
+            $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(3).attr('title', 'JS格式工具');
             $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(3).attr('class', 'tooltipmain');
-            $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(4).attr('title', 'JSON格式工具');
+            $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(4).attr('title', 'CSS格式工具');
             $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(4).attr('class', 'tooltipmain');
-            $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(5).attr('title', 'Bootstrap布局可视化');
+            $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(5).attr('title', 'HTML格式工具');
             $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(5).attr('class', 'tooltipmain');
-            $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(6).attr('title', '文本比较工具');
+            $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(6).attr('title', 'Bootstrap布局可视化');
             $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(6).attr('class', 'tooltipmain');
-            // $('.jsmodern-fullpage-navigation.jsmodern-fullpage-navigation-default.jsmodern-fullpage-navigation-x').find('b').eq(6).attr('onclick', 'f_ifameopen()');
-            //激活提示组件
+
             $('.tooltipmain').tooltipster({
                 theme: 'tooltipster-shadow' //使用Noir主题
             });
@@ -108,12 +107,12 @@
 <body style="height:100%;width:100%;overflow-y:hidden;overflow-x:hidden;" onkeyup="f_key()" >
     <section class="container" style="height:100%;width:100%">
         <div><div class="op-section"  style="height:100%;width:100%"><iframe src="TextEditorTool.html" style="height:100%;width:100%" frameborder='0' id='TextEditorTool'></iframe></div></div>
-        <div><div class="op-section"  style="height:100%;width:100%"><iframe src="HtmlFormatTool.html" style="height:100%;width:100%" frameborder='0' id='HtmlFormatTool' ></iframe></div></div>
+        <div><div class="op-section"  style="height:100%;width:100%"><iframe src="JsonConvertTool.html" style="height:100%;width:100%" frameborder='0' id='JsonConvertTool' ></iframe></div></div>
+        <div><div class="op-section"  style="height:100%;width:100%"><iframe src="TextDifference.html" style="height:100%;width:100%" frameborder='0' id='TextCompareTool'></iframe></div></div>
         <div><div class="op-section"  style="height:100%;width:100%"><iframe src="JSFormatTool.html" style="height:100%;width:100%" frameborder='0' id='JSFormatTool' ></iframe></div></div>
         <div><div class="op-section"  style="height:100%;width:100%"><iframe src="CssFormatTool.html" style="height:100%;width:100%" frameborder='0' id='CssFormatTool' ></iframe></div></div>
-        <div><div class="op-section"  style="height:100%;width:100%"><iframe src="JsonConvertTool.html" style="height:100%;width:100%" frameborder='0' id='JsonConvertTool' ></iframe></div></div>
+        <div><div class="op-section"  style="height:100%;width:100%"><iframe src="HtmlFormatTool.html" style="height:100%;width:100%" frameborder='0' id='HtmlFormatTool' ></iframe></div></div>
         <div><div class="op-section"  style="height:100%;width:100%"><iframe src="../bootstrap3-levanax/index.html" style="height:100%;width:100%" frameborder='0' id='BootstrapTool'></iframe></div></div>
-        <div><div class="op-section"  style="height:100%;width:100%"><iframe src="TextDifference.html" style="height:100%;width:100%" frameborder='0' id='TextCompareTool'></iframe></div></div>
     </section>
 </body>
 </html>
