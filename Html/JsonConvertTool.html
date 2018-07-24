@@ -330,6 +330,9 @@
         var newheader = "public class " + tbname + " \n{\n"
         $.each(headerlist, function (index, value) {
           if (index != 0) {
+              newheader += " /// <summary>\n"
+              newheader += " /// "+value+"\n"
+              newheader += " /// <summary>\n"
               newheader += " public string " + value + " {get;set;}\n";
               feildlist.push(value);
           }
